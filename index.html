@@ -1,0 +1,1824 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UpskillLanka - Sri Lanka's Career Pathway Guide</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Lucide Icons CDN -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <!-- Tailwind Config for custom theme colors & fonts -->
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              display: ['"Stack Sans Headline"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+              body: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', '"Segoe UI"', 'Roboto', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      /* Integrated Color Themes */
+      :root {
+        --bg:       #07080f;
+        --surf:     #0f1018;
+        --surf2:    #181921;
+        --border:   rgba(255,255,255,0.08);
+        --green:    #00e5a0;
+        --purple:   #a855f7;
+        --amber:    #fbbf24;
+        --blue:     #60a5fa;
+        --text:     #eeeef5;
+        --muted:    #696980;
+        --header-bg: rgba(7,8,15,.88);
+      }
+
+      :root.light {
+        --bg:       #f0f2f8;
+        --surf:     #ffffff;
+        --surf2:    #e8eaf2;
+        --border:   rgba(0,0,0,0.09);
+        --green:    #00a371;
+        --purple:   #8b35e8;
+        --amber:    #d4920a;
+        --blue:     #2a80e8;
+        --text:     #0e0f1a;
+        --muted:    #7a7a9a;
+        --header-bg: rgba(240,242,248,.92);
+      }
+
+      body {
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-size: 16px;
+        line-height: 1.6;
+        min-height: 100vh;
+        overflow-x: hidden;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+        transition: background .3s ease, color .3s ease;
+      }
+
+      /* Ambient Radial Orbs */
+      body::before, body::after {
+        content: '';
+        position: fixed;
+        border-radius: 50%;
+        pointer-events: none;
+        z-index: 0;
+      }
+      body::before {
+        top: -25%; left: -15%;
+        width: 65vmax; height: 65vmax;
+        background: radial-gradient(circle, rgba(168,85,247,.07) 0%, transparent 65%);
+      }
+      body::after {
+        bottom: -20%; right: -10%;
+        width: 50vmax; height: 50vmax;
+        background: radial-gradient(circle, rgba(0,229,160,.06) 0%, transparent 65%);
+      }
+      :root.light body::before { background: radial-gradient(circle, rgba(139,53,232,.05) 0%, transparent 65%); }
+      :root.light body::after  { background: radial-gradient(circle, rgba(0,163,113,.05) 0%, transparent 65%); }
+
+      /* Wave Parallax & Floating Shapes Section */
+      .home-bg-animation {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.8;
+        user-select: none;
+      }
+      .wave-layer {
+        position: absolute;
+        inset: 0;
+        transition: transform 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+        will-change: transform;
+      }
+      .ambient-orb {
+        position: absolute;
+        border-radius: 50%;
+        mix-blend-mode: screen;
+        pointer-events: none;
+        filter: blur(120px);
+        -webkit-filter: blur(120px);
+      }
+      :root.light .ambient-orb {
+        mix-blend-mode: multiply;
+        opacity: 0.55;
+      }
+
+      @keyframes waveSwaySlow {
+        0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+        50% { transform: translate3d(2%, -1%, 0) rotate(0.5deg); }
+        100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      }
+      @keyframes waveSwayMedium {
+        0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+        50% { transform: translate3d(-3%, 2%, 0) rotate(-1deg); }
+        100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      }
+      @keyframes waveSwayFast {
+        0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+        50% { transform: translate3d(2.5%, -2%, 0) rotate(1.2deg); }
+        100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      }
+      @keyframes waveSwayExtra {
+        0% { transform: translate3d(0, 0, 0) rotate(0deg); }
+        50% { transform: translate3d(-1.5%, 1.5%, 0) rotate(-0.5deg); }
+        100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+      }
+      @keyframes drift-slow {
+        0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate(12%, -8%) scale(1.15) rotate(120deg); }
+        100% { transform: translate(-8%, 15%) scale(0.9) rotate(360deg); }
+      }
+      @keyframes drift-medium {
+        0% { transform: translate(0, 0) scale(1) rotate(0deg); }
+        50% { transform: translate(-15%, 12%) scale(1.25) rotate(-180deg); }
+        100% { transform: translate(8%, -10%) scale(0.85) rotate(-360deg); }
+      }
+      .animate-wave-slow { animation: waveSwaySlow 28s infinite alternate ease-in-out; }
+      .animate-wave-medium { animation: waveSwayMedium 22s infinite alternate-reverse ease-in-out; }
+      .animate-wave-fast { animation: waveSwayFast 18s infinite alternate ease-in-out; }
+      .animate-wave-extra { animation: waveSwayExtra 32s infinite alternate-reverse ease-in-out; }
+
+      /* UI Styles */
+      .theme-toggle {
+        width: 44px; height: 24px;
+        background: var(--surf2);
+        border: 1px solid var(--border);
+        border-radius: 50px;
+        cursor: pointer;
+        position: relative;
+        flex-shrink: 0;
+        transition: background .3s ease, border-color .3s ease;
+        padding: 0;
+        outline: none;
+      }
+      .theme-toggle-thumb {
+        position: absolute;
+        top: 3px; left: 3px;
+        width: 16px; height: 16px;
+        border-radius: 50%;
+        background: var(--muted);
+        transition: transform .3s cubic-bezier(.4,0,.2,1), background .3s ease;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 9px; line-height: 1;
+      }
+      :root.light .theme-toggle-thumb { transform: translateX(20px); background: var(--amber); }
+      :root:not(.light) .theme-toggle-thumb { transform: translateX(0); background: #5b5b80; }
+
+      header {
+        position: sticky; top: 0; z-index: 200;
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 24px;
+        background: var(--header-bg);
+        backdrop-filter: blur(18px);
+        -webkit-backdrop-filter: blur(18px);
+        border-bottom: 1px solid var(--border);
+      }
+
+      .logo {
+        display: flex; align-items: center; gap: 10px;
+        font-family: "Stack Sans Headline", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-weight: 500; font-size: 21px; letter-spacing: -0.3px;
+        color: var(--text);
+        text-decoration: none;
+        cursor: pointer;
+        user-select: none;
+        transition: color .3s ease;
+      }
+      .logo-container {
+        width: 36px; height: 36px; border-radius: 10px; flex-shrink: 0;
+        background: var(--surf2);
+        border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        transition: all .3s ease;
+      }
+      .logo:hover .logo-container { transform: scale(1.05); border-color: var(--green); }
+
+      .btn {
+        padding: 8px 16px; border-radius: 8px; border: none;
+        font-size: 13px; font-weight: 600;
+        cursor: pointer; transition: all .2s ease; white-space: nowrap;
+      }
+      .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--muted); }
+      .btn-outline:hover { border-color: rgba(255,255,255,.2); color: var(--text); }
+      :root.light .btn-outline:hover { border-color: rgba(0,0,0,.15); }
+      .btn-solid { background: linear-gradient(135deg, var(--green), #00c880); color: #000; font-weight: 700; }
+      .btn-solid:hover { transform: translateY(-1px); box-shadow: 0 8px 22px rgba(0,229,160,.28); }
+
+      .pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        background: rgba(168,85,247,.13);
+        border: 1px solid rgba(168,85,247,.28);
+        color: #c084fc;
+        padding: 5px 14px; border-radius: 50px;
+        font-size: 12px; font-weight: 600; letter-spacing: .4px; text-transform: uppercase;
+        margin-bottom: 26px;
+        animation: up .6s ease both;
+      }
+      :root.light .pill { background: rgba(139,53,232,.1); border-color: rgba(139,53,232,.22); color: var(--purple); }
+
+      .hero-h1 {
+        font-family: "Stack Sans Headline", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: clamp(34px, 7vw, 66px);
+        font-weight: 500; line-height: 1.15; letter-spacing: -0.8px;
+        max-width: 720px; margin-bottom: 18px;
+        animation: up .6s .08s ease both;
+        position: relative;
+      }
+      .hero-h1 .grad {
+        background: linear-gradient(120deg, var(--green) 0%, var(--purple) 100%);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .hero-sub {
+        color: var(--muted);
+        font-size: 16px;
+        max-width: 480px;
+        line-height: 1.65;
+        margin-bottom: 44px;
+        animation: up .6s .16s ease both;
+        min-height: 2.8em;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+
+      .typewriter-wrap { display: inline; position: relative; }
+      .typewriter-cursor {
+        display: inline-block;
+        width: 2px;
+        height: 1.1em;
+        background: var(--green);
+        border-radius: 2px;
+        margin-left: 2px;
+        vertical-align: middle;
+        animation: blink 1s step-end infinite;
+        position: relative;
+        top: -1px;
+      }
+      @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+      .home-cards {
+        display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+        animation: up .6s .24s ease both;
+        position: relative;
+      }
+
+      .home-card {
+        width: 230px; padding: 26px 22px;
+        background: var(--surf); border: 1px solid var(--border);
+        border-radius: 20px; cursor: pointer;
+        transition: transform .28s ease, box-shadow .28s ease, border-color .28s ease;
+        text-align: left; position: relative; overflow: hidden;
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+      }
+      .home-card::after {
+        content: ''; position: absolute; inset: 0; border-radius: 20px;
+        opacity: 0; transition: opacity .28s ease;
+      }
+      .home-card.g::after { background: radial-gradient(circle at 0% 0%, rgba(0,229,160,.1), transparent 55%); }
+      .home-card.p::after { background: radial-gradient(circle at 0% 0%, rgba(168,85,247,.1), transparent 55%); }
+      .home-card:hover { transform: translateY(-6px); border-color: rgba(255,255,255,.13); }
+      .home-card:hover::after { opacity: 1; }
+      .home-card.g:hover { box-shadow: 0 20px 44px rgba(0,229,160,.12); }
+      .home-card.p:hover { box-shadow: 0 20px 44px rgba(168,85,247,.12); }
+
+      .hc-icon {
+        width: 46px; height: 46px; border-radius: 12px;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 22px; margin-bottom: 14px; position: relative; z-index: 1;
+      }
+      .hc-icon.g { background: rgba(0,229,160,.13); }
+      .hc-icon.p { background: rgba(168,85,247,.13); }
+
+      .home-card h3 { font-family: "Stack Sans Headline", sans-serif; font-size: 19px; font-weight: 500; margin-bottom: 6px; position: relative; z-index: 1; }
+      .home-card p  { color: var(--muted); font-size: 13px; line-height: 1.5; margin-bottom: 18px; position: relative; z-index: 1; }
+      .hc-cta { font-size: 13px; font-weight: 700; position: relative; z-index: 1; }
+      .home-card.g .hc-cta { color: var(--green); }
+      .home-card.p .hc-cta { color: var(--purple); }
+
+      .sub-nav { display: flex; align-items: center; gap: 6px; padding: 20px 24px 0; max-width: 1120px; margin: 0 auto; }
+      .back-btn {
+        display: inline-flex; align-items: center; gap: 5px;
+        background: none; border: none;
+        color: var(--muted); font-size: 13px; font-weight: 600; cursor: pointer;
+        transition: color .2s;
+      }
+      .back-btn:hover { color: var(--text); }
+      .crumb { color: var(--muted); font-size: 13px; }
+      .crumb b { color: var(--text); font-weight: 600; }
+
+      .ph { padding: 28px 24px 20px; max-width: 1120px; margin: 0 auto; }
+      .ph h2 { font-family: "Stack Sans Headline", sans-serif; font-size: clamp(26px, 4.5vw, 40px); font-weight: 500; letter-spacing: -0.3px; margin-bottom: 5px; }
+      .ph p  { color: var(--muted); font-size: 14px; }
+
+      .card-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 14px;
+        padding: 4px 24px 52px;
+        max-width: 1120px; margin: 0 auto;
+      }
+
+      .cc {
+        background: var(--surf); border: 1px solid var(--border);
+        border-radius: 16px; padding: 22px;
+        cursor: pointer;
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        animation: up .45s ease both;
+      }
+      .cc:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.13); box-shadow: 0 16px 36px rgba(0,0,0,.35); }
+      .cc-emoji { font-size: 30px; margin-bottom: 12px; line-height: 1; }
+      .cc h3 { font-family: "Stack Sans Headline", sans-serif; font-size: 16px; font-weight: 500; margin-bottom: 5px; }
+      .cc p  { color: var(--muted); font-size: 13px; line-height: 1.5; }
+      .cc-foot { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+      
+      .tag { font-size: 10px; font-weight: 700; letter-spacing: .5px; text-transform: uppercase; padding: 3px 9px; border-radius: 50px; }
+      .tg { background: rgba(0,229,160,.11); color: var(--green); }
+      .tp { background: rgba(168,85,247,.11); color: #c084fc; }
+      .ta { background: rgba(251,191,36,.11); color: var(--amber); }
+      .tb { background: rgba(96,165,250,.11); color: var(--blue); }
+
+      .arr {
+        width: 26px; height: 26px; border-radius: 7px;
+        background: var(--surf2);
+        display: flex; align-items: center; justify-content: center;
+        color: var(--muted); font-size: 13px;
+        transition: all .2s;
+      }
+      .cc:hover .arr { background: rgba(255,255,255,.1); color: var(--text); transform: translate(2px,-2px); }
+
+      #detailBox {
+        background: var(--surf); border: 1px solid var(--border);
+        border-radius: 20px; padding: 36px;
+        margin: 16px 24px 0;
+        max-width: 820px;
+        animation: up .4s ease;
+      }
+      .di-emoji { font-size: 44px; margin-bottom: 18px; line-height: 1; }
+      #detailBox h2 { font-family: "Stack Sans Headline", sans-serif; font-size: clamp(22px, 4vw, 32px); font-weight: 500; letter-spacing: -0.3px; margin-bottom: 6px; }
+      .di-desc { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
+      .di-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .di-block { background: var(--surf2); border-radius: 14px; padding: 18px; }
+      .di-label { font-size: 10px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+      .di-val { font-size: 14px; line-height: 1.65; color: var(--text); }
+
+      #dashboard { padding: 36px 24px 52px; max-width: 920px; margin: 0 auto; }
+      #dashboard > h2 { font-family: "Stack Sans Headline", sans-serif; font-size: clamp(24px, 4vw, 34px); font-weight: 500; margin-bottom: 22px; }
+      .profile-card {
+        background: var(--surf); border: 1px solid var(--border);
+        border-radius: 18px; padding: 24px;
+        display: flex; align-items: center; gap: 16px;
+        margin-bottom: 20px;
+      }
+      .avatar {
+        width: 56px; height: 56px; border-radius: 50%; flex-shrink: 0;
+        background: linear-gradient(135deg, var(--green), var(--purple));
+        display: flex; align-items: center; justify-content: center;
+        font-family: "Stack Sans Headline", sans-serif; font-weight: 500; font-size: 20px; color: #000;
+      }
+      .pi h3 { font-family: "Stack Sans Headline", sans-serif; font-size: 18px; font-weight: 500; }
+      .pi p  { color: var(--muted); font-size: 13px; margin-top: 2px; }
+
+      .ex-row { display: flex; gap: 12px; flex-wrap: wrap; }
+      .ex-btn {
+        flex: 1; min-width: 180px;
+        background: var(--surf); border: 1px solid var(--border);
+        border-radius: 14px; padding: 18px 20px;
+        display: flex; justify-content: space-between; align-items: center;
+        cursor: pointer; transition: all .25s ease;
+      }
+      .ex-btn span:first-child { font-family: "Stack Sans Headline", sans-serif; font-weight: 500; font-size: 15px; }
+      .ex-btn.g:hover { border-color: rgba(0,229,160,.3); box-shadow: 0 10px 24px rgba(0,229,160,.09); transform: translateY(-3px); }
+      .ex-btn.p:hover { border-color: rgba(168,85,247,.3); box-shadow: 0 10px 24px rgba(168,85,247,.09); transform: translateY(-3px); }
+
+      .login-card {
+        background: var(--surf); border: 1px solid var(--border);
+        border-radius: 22px; padding: 36px 32px;
+        width: 100%; max-width: 370px;
+        animation: up .45s ease;
+      }
+      .login-card h2 { font-family: "Stack Sans Headline", sans-serif; font-size: 26px; font-weight: 500; margin-bottom: 4px; }
+      .login-card .sub { color: var(--muted); font-size: 14px; margin-bottom: 26px; }
+      .igrp { margin-bottom: 14px; }
+      .igrp label { display: block; font-size: 12px; font-weight: 600; color: var(--muted); margin-bottom: 5px; letter-spacing: .3px; }
+      .igrp input {
+        width: 100%; background: var(--surf2);
+        border: 1px solid var(--border);
+        border-radius: 10px; padding: 11px 14px;
+        color: var(--text); font-size: 14px;
+        outline: none; transition: border-color .2s;
+        -webkit-appearance: none;
+      }
+      .igrp input:focus { border-color: rgba(0,229,160,.45); }
+      .igrp input::placeholder { color: var(--muted); }
+      .login-btn {
+        width: 100%; margin-top: 6px; padding: 13px;
+        background: linear-gradient(135deg, var(--green), #00c880);
+        color: #000; border: none; border-radius: 10px;
+        font-family: "Stack Sans Headline", sans-serif; font-weight: 500; font-size: 15px;
+        cursor: pointer; transition: all .2s ease;
+      }
+      .login-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 26px rgba(0,229,160,.28); }
+
+      @keyframes up {
+        from { opacity: 0; transform: translateY(18px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      .cat-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 14px;
+        padding: 4px 24px 52px;
+        max-width: 1120px;
+        margin: 0 auto;
+      }
+
+      .cat-btn {
+        background: var(--surf); border: 1px solid var(--border); border-radius: 16px;
+        padding: 24px 20px; cursor: pointer; text-align: left;
+        transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+        animation: up .45s ease both;
+        display: flex; flex-direction: column; gap: 10px;
+      }
+      .cat-btn:hover { transform: translateY(-4px); border-color: rgba(255,255,255,.13); box-shadow: 0 16px 36px rgba(0,0,0,.35); }
+      .cat-btn-icon  { font-size: 28px; line-height: 1; }
+      .cat-btn-title { font-family: "Stack Sans Headline", sans-serif; font-size: 15px; color: var(--text); }
+      .cat-btn-sub   { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+      .cat-btn.af:hover   { border-color: rgba(0,229,160,.3);   box-shadow: 0 16px 36px rgba(0,229,160,.1); }
+      .cat-btn.biz:hover  { border-color: rgba(168,85,247,.3);  box-shadow: 0 16px 36px rgba(168,85,247,.1); }
+      .cat-btn.itc:hover  { border-color: rgba(96,165,250,.3);  box-shadow: 0 16px 36px rgba(96,165,250,.1); }
+      .cat-btn.bank:hover { border-color: rgba(251,191,36,.3);  box-shadow: 0 16px 36px rgba(251,191,36,.1); }
+
+      .ql-page { padding: 0 24px 52px; max-width: 900px; margin: 0 auto; }
+      .ql-list { display: flex; flex-direction: column; gap: 10px; }
+      .ql-item { background: var(--surf); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; animation: up .4s ease both; }
+      .ql-header {
+        width: 100%; display: flex; align-items: center; justify-content: space-between;
+        padding: 16px 18px; background: none; border: none;
+        color: var(--text); font-family: 'Plus Jakarta Sans', sans-serif;
+        cursor: pointer; gap: 12px; text-align: left; transition: background .2s;
+      }
+      .ql-left  { display: flex; flex-direction: column; gap: 3px; flex: 1; min-width: 0; }
+      .ql-name  { font-size: 15px; font-weight: 700; }
+      .ql-full  { font-size: 12px; color: var(--muted); }
+      .ql-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+      .ql-origin { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 50px; }
+
+      .ql-origin.global,   .ql-origin.academic  { background: rgba(96,165,250,.12); color: var(--blue); }
+      .ql-origin.local,    .ql-origin.state      { background: rgba(0,229,160,.11);  color: var(--green); }
+      .ql-origin.chartered { background: rgba(168,85,247,.11); color: #c084fc; }
+      .ql-chevron { font-size: 18px; color: var(--muted); transition: transform .25s ease; line-height: 1; flex-shrink: 0; }
+
+      .ql-body { max-height: 0; overflow: hidden; transition: max-height .38s ease-in-out; }
+      .ql-inner { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 18px 18px; }
+      .ql-cell-label { font-size: 10px; font-weight: 700; letter-spacing: .7px; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+      .ql-cell-val   { font-size: 13px; line-height: 1.65; color: var(--text); background: var(--surf2); border-radius: 10px; padding: 12px 14px; }
+
+      @media (max-width: 480px) {
+        header { padding: 12px 16px; }
+        .logo  { font-size: 18px; }
+        .logo-container { width: 32px; height: 32px; border-radius: 8px; }
+        .hero-h1 { letter-spacing: -0.8px; }
+        .hero-sub { font-size: 15px; }
+        .home-cards { flex-direction: column; align-items: stretch; width: 100%; max-width: 340px; }
+        .home-card  { width: 100%; }
+        .card-grid  { padding: 4px 16px 44px; grid-template-columns: 1fr; gap: 10px; }
+        .cc { padding: 16px 14px; }
+        .cc-emoji { font-size: 26px; }
+        .cc h3 { font-size: 14px; }
+        .cc p  { font-size: 12px; }
+        .ph { padding: 22px 16px 14px; }
+        .sub-nav { padding: 16px 16px 0; }
+        #detailBox { padding: 22px 18px; margin: 14px 16px 0; }
+        #dashboard { padding: 24px 16px 44px; }
+        .ex-row { flex-direction: column; }
+        .ex-btn { min-width: 0; }
+        .login-card { padding: 28px 20px; }
+        .cat-grid { grid-template-columns: 1fr; gap: 10px; padding: 4px 16px 44px; }
+        .ql-page { padding: 0 16px 44px; }
+        .ql-inner { grid-template-columns: 1fr; }
+        .ql-full { display: none; }
+      }
+
+      @media (min-width: 481px) and (max-width: 768px) {
+        .card-grid { grid-template-columns: 1fr 1fr; gap: 12px; padding: 4px 20px 48px; }
+        .cat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      }
+
+      /* Specific lightness adjustments */
+      :root.light body { background: var(--bg); }
+      :root.light .btn-outline { color: var(--muted); }
+      :root.light .btn-outline:hover { color: var(--text); }
+      :root.light .back-btn { color: var(--muted); }
+      :root.light .back-btn:hover { color: var(--text); }
+      :root.light .ql-header { color: var(--text); }
+      :root.light .ql-header:hover { background: rgba(0,0,0,.04); }
+      :root.light .pill { background: rgba(139,53,232,.1); border-color: rgba(139,53,232,.22); }
+      :root.light .logo { color: var(--text); }
+      :root.light .tp { color: var(--purple); }
+    </style>
+  </head>
+  <body class="relative min-h-screen">
+    <div id="app"></div>
+
+    <script>
+      // ── DATA STORE ──
+      const olData = {
+        it: {
+          emoji: "💻",
+          title: "IT & Technology",
+          desc: "Software, web development, networking, AI, graphics & gaming",
+          tag: "tg",
+          tagText: "High Demand",
+          cause: "Best if you enjoy technology, logical thinking, and solving problems with code or digital art.",
+          benefit: "High-demand jobs, freelancing, remote work worldwide & competitive global salaries."
+        },
+        languages: {
+          emoji: "🌐",
+          title: "Languages",
+          desc: "English, Japanese, Korean, French",
+          tag: "tb",
+          tagText: "Global",
+          cause: "Perfect if you enjoy communication, cultural exchange, and global opportunities.",
+          benefit: "Work abroad, tourism, translation jobs & international business roles."
+        },
+        nvq: {
+          emoji: "🔧",
+          title: "NVQ Training",
+          desc: "Vocational skill development programs",
+          tag: "ta",
+          tagText: "Practical",
+          cause: "Great if you want hands-on practical education and a fast path to employment.",
+          benefit: "Quick job entry, trade skills, entrepreneurship & government certification."
+        },
+        commerce: {
+          emoji: "📊",
+          title: "Commerce Stream",
+          desc: "Accounting, Business & Economics",
+          tag: "tp",
+          tagText: "Business",
+          cause: "Ideal if you're interested in business, finance, and management careers.",
+          benefit: "Banking, accounting, management careers & a strong A/L foundation."
+        }
+      };
+
+      const alData = {
+        uni: {
+          emoji: "🏛️",
+          title: "University Degrees",
+          desc: "Local & foreign universities",
+          tag: "tg",
+          tagText: "Academic",
+          cause: "Best for deep specialisation, professional qualifications & long-term prospects.",
+          benefit: "Professional careers, high salary potential, research & global recognition."
+        },
+        jobs: {
+          emoji: "💼",
+          title: "Jobs & Careers",
+          desc: "Government & private sector roles",
+          tag: "ta",
+          tagText: "Immediate",
+          cause: "Great if you want to start earning and gaining real-world experience right away.",
+          benefit: "Financial independence, career growth, networking & practical experience."
+        },
+        professional: {
+          emoji: "📜",
+          title: "Professional Courses",
+          desc: "CIMA, ACCA, CIM, AAT & more",
+          tag: "tb",
+          tagText: "Certified",
+          cause: "Ideal for globally recognised qualifications in finance, marketing or management.",
+          benefit: "Internationally recognised credentials, high earning potential & flexible study."
+        }
+      };
+
+      const afData = [
+        { name: "AAT Sri Lanka", full: "Association of Accounting Technicians", origin: "Local Professional", focus: "Financial Accounting & Practical Bookkeeping", why: "Ultimate foundation; gives exemptions in CA, ACCA, CIMA. Builds strong accounting fundamentals and improves employability." },
+        { name: "ACCA FIA", full: "Association of Chartered Certified Accountants – Foundation", origin: "Global (UK)", focus: "Financial & Management Accounting", why: "Fast-track entry to ACCA without A/Ls; ~6 months duration. Internationally recognised, allows quick progression into global job markets." },
+        { name: "CIMA Certificate", full: "Chartered Institute of Management Accountants", origin: "Global (UK)", focus: "Management Accounting & Business Strategy", why: "Ideal for business strategy and management-focused careers. Develops analytical and decision-making skills for corporate management." },
+        { name: "CMA Sri Lanka", full: "Institute of Certified Management Accountants Sri Lanka", origin: "Local Professional", focus: "Cost & Management Accounting", why: "Affordable local path focused on corporate and manufacturing accounting. Cost-effective pathway into management roles." },
+        { name: "IBSL Diplomas", full: "Institute of Bankers of Sri Lanka", origin: "Local Professional", focus: "Banking, Finance & Risk", why: "Best for early entry into banking sector careers. Gives a strong foundation for financial services and helps students enter the industry." }
+      ];
+
+      const bizData = [
+        { name: "University Foundation in Business", full: "Academic / University Tier", category: "University Route", focus: "General Management & Academic Skills", why: "Bypasses school A/Ls entirely. A 1-year foundation gives you direct entry to Year 1 of a UK, Australian, or local Bachelor's degree." },
+        { name: "ABE UK", full: "Association of Business Executives", category: "Global Professional", focus: "Corporate Strategy & Entrepreneurship", why: "Highly modular and practical. Completing up to Level 5 lets you skip directly into the final year (Top-up) of a Business degree." },
+        { name: "CIM UK", full: "Chartered Institute of Marketing", category: "Global Chartered", focus: "Strategy, Branding & Digital Marketing", why: "The gold standard for marketing. You can start the foundational tier right after O/Ls to build an international marketing career early." },
+        { name: "SLIM", full: "Sri Lanka Institute of Marketing", category: "Local Professional", focus: "Practical Sales & Marketing Strategy", why: "Very popular and budget-friendly in Sri Lanka. Starting with the Preliminary Certificate (PCM) progresses rapidly to a Postgraduate Diploma." },
+        { name: "CIPM", full: "Chartered Institute of Personnel Management", category: "Local Chartered", focus: "Human Resource Management & Labor Law", why: "The definitive pathway if you want to become an HR professional in Sri Lanka. You can enter the Foundation course right after O/Ls." },
+        { name: "NIBM Foundation & Diplomas", full: "National Institute of Business Management", category: "State-owned Institute", focus: "Business Admin & Operations", why: "Highly structured, stable local pathway that maps directly into final-year degrees with overseas partner universities like Coventry (UK)." }
+      ];
+
+      const itcData = [
+        { name: "UCSC FIT", full: "Foundation in Information Technology (UCSC)", category: "Local Government (UCSC)", focus: "ICT Applications, Math & English", why: "The most budget-friendly option. Passing FIT gives you direct admission into the prestigious Colombo University External BIT degree." },
+        { name: "NIBM Foundation", full: "Foundation for Bachelor's Degree", category: "Local State-Owned", focus: "MIS, Digital Tech & Accounting", why: "Highly structured program bridging core bookkeeping, statistics, and business computing modules." },
+        { name: "IIT Foundation", full: "Foundation Programme in Computing", category: "Private / UK Affiliated", focus: "Business Analytics & Computing", why: "Direct fast-track route into premium UK university degrees (University of Westminster) hosted in Sri Lanka." },
+        { name: "SLIIT Foundation", full: "Foundation in IT / Business", category: "Private / UGC Approved", focus: "IT Systems & Business Data Analytics", why: "Provides a highly recognized, stable foundation that lets you specialize in corporate tech structures early." },
+        { name: "BCAS Foundation", full: "Foundation in Business & IT", category: "Private / Pearson BTEC", focus: "Programming & Digital Marketing", why: "Features a distinct dual-semester layout allowing you to mix data analytics with global market concepts." }
+      ];
+
+      const boData = [
+        { name: "IBSL Foundations", full: "Institute of Bankers of Sri Lanka", category: "Local Statutory Body", focus: "Commercial Banking & Financial Systems", why: "The most recognized gateway to local retail banking. You can apply for executive trainee roles early." },
+        { name: "AAP Secretarial Diploma", full: "Academy for Administrative Professionals", category: "Local Professional", focus: "Office Administration & Business English", why: "A highly practical 6-month course that equips you with executive secretary and workplace management skills." },
+        { name: "ICCSSL Foundation", full: "Institute of Chartered Corporate Secretaries", category: "Professional Body", focus: "Company Secretarial Practices & Law", why: "A unique 6-month online path that lays the groundwork for becoming a certified corporate secretary." },
+        { name: "NIBM Foundation in Business", full: "School of Business", category: "State-Owned Academy", focus: "Office Productivity & Management Fundamentals", why: "Seamlessly bridges O/L students into advanced diplomas in Digital Banking or Human Resources." },
+        { name: "LCCI Executive Secretary Diploma", full: "Pearson / UK", category: "Global (UK-affiliated)", focus: "Business Correspondence & Practical ICT", why: "Globally recognized qualification combining advanced office IT skills with administrative management." }
+      ];
+
+      const seData = [
+        { name: "Foundation Certificate in Higher Education (IT) – IIT", full: "Informatics Institute of Technology", category: "UK Affiliated (University of Westminster)", focus: "Programming fundamentals, software development, databases, mathematics for computing", why: "A strong direct pathway into an internationally recognized Software Engineering degree. Good for students targeting foreign-affiliated qualifications after O/L." },
+        { name: "Foundation Certificate in IT – SLIIT", full: "Sri Lanka Institute of Information Technology", category: "Local (UGC Approved)", focus: "IT basics, programming, networking, academic English", why: "One of the most popular and affordable local pathways into IT degrees in Sri Lanka. Suitable for students planning to continue up to a local or foreign IT degree." },
+        { name: "Advanced Diploma in Software Engineering (ADSE) – NIBM", full: "National Institute of Business Management", category: "Local Government / UK Affiliated", focus: "Software engineering, application development, databases, system analysis", why: "Highly recognized in Sri Lanka with both practical and academic value. Students can enter the IT industry early or continue toward a UK top-up degree." },
+        { name: "Pearson BTEC Foundation / DiTEC – ESOFT Metro Campus", full: "ESOFT Metro Campus", category: "UK Affiliated (Pearson BTEC)", focus: "Computing, web development, networking, practical IT skills", why: "Flexible pathway leading to Pearson HND and foreign university degrees. Popular among students who prefer assignment-based learning instead of traditional exams." }
+      ];
+
+      const webData = [
+        { name: "Advanced Diploma in Web Engineering – NIBM", full: "National Institute of Business Management", category: "Local Government", focus: "Full-stack web development, databases, UI/UX, modern web technologies", why: "Ideal for students who want practical software and web development skills directly after O/Ls with pathways to jobs or degree top-ups." },
+        { name: "Diploma in Web Application Development – ESOFT Metro Campus", full: "ESOFT Metro Campus", category: "Local / Pearson BTEC", focus: "Web application development, frontend & backend programming, responsive design", why: "Good starting point for students aiming for international IT qualifications and specialized web development careers." },
+        { name: "Short Course in Web Application Development – OUSL", full: "Open University of Sri Lanka", category: "Local Government", focus: "Basic web development, HTML/CSS, JavaScript fundamentals", why: "Affordable and flexible pathway for beginners who want to enter IT gradually after O/L while building freelance-ready skills." },
+        { name: "Advanced Diploma in Web Development & UI Design – Wijeya Graphics", full: "Wijeya Graphics", category: "Local Private", focus: "Front-end development, UI/UX design, creative web design tools", why: "Excellent for creative students interested in both coding and visual design, with strong portfolio-building opportunities after O/Ls." }
+      ];
+
+      const graphicsData = [
+        { name: "Advanced Diploma / Foundation in Multimedia Design – AMDT Creative Dept.", full: "AMDT - Association of Multimedia Design & Technology", category: "UK Affiliated", focus: "Multimedia Design, Graphic Design, Animation, Creative Media", why: "Excellent for students interested in creative technology careers with opportunities to continue into international design degrees." },
+        { name: "Foundation in Art & Design – Academy of Design (AOD)", full: "Academy of Design (AOD)", category: "UK Affiliated (Northumbria University)", focus: "Art & Design, Visual Communication, Branding, Creative Thinking", why: "Helps students build a strong design portfolio and creative foundation before entering professional graphic design or visual communication degrees." },
+        { name: "Advanced Diploma in Graphic Design & Animation – Wijeya Graphics", full: "Wijeya Graphics", category: "Local Private", focus: "Graphic Design, Animation, Digital Illustration, Video Editing", why: "More industry-oriented and practical, making it suitable for students who want hands-on creative skills and quicker entry into the media industry." },
+        { name: "Advanced Diploma in Multimedia Production – NIBM", full: "National Institute of Business Management", category: "Local Govt.", focus: "Multimedia Technology, Digital Content Creation, Video Production, Web Media", why: "Combines creative and technical multimedia skills while also offering a recognized pathway toward higher education in multimedia fields." }
+      ];
+
+      const networkData = [
+        { name: "Diploma in Computer Hardware Engineering & Networking", full: "Computer Hardware & Support Academy", category: "International Vendor Preparation", focus: "Computer hardware, PC assembling, networking, troubleshooting, technical support", why: "Best for students who enjoy hands-on technical work and want quick entry into IT support or system administration careers." },
+        { name: "Advanced Diploma in Computer Networking & Server Administration", full: "CISCO & Network Systems Administration", category: "Local Institute / Cisco Partner", focus: "Networking, server management, Cisco technologies, cybersecurity basics", why: "Excellent pathway for becoming a Network Engineer while preparing for globally recognized certifications like Cisco CCNA." },
+        { name: "Advanced Diploma in Computer Networks", full: "Pearson BTEC International Foundation", category: "UK Affiliated (Pearson BTEC)", focus: "Enterprise networking, IT infrastructure, communication systems", why: "Provides an internationally recognized academic pathway with opportunities to continue into HND or foreign-affiliated IT degrees." },
+        { name: "Computer Hardware Technician (NVQ Level 3/4)", full: "National Vocational Skill Program", category: "Local Government NVQ Qualification", focus: "Hardware maintenance, repair, networking basics, technical operations", why: "Ideal for students seeking affordable practical training and stable technical careers in government or private sector institutions." }
+      ];
+
+      const cyberData = [
+        { name: "Executive Diploma in Cyber Security / CEH", full: "EC-Council Certified Partner Pathway", category: "Global / EC-Council Partner", focus: "Ethical Hacking, Penetration Testing, Network Security, Cyber Defense", why: "Gives early exposure to real-world cyber security tools and globally recognized certifications, making it ideal for students targeting international cyber security careers." },
+        { name: "Foundation Certificate in IT (IIT)", full: "Informatics Institute of Technology", category: "UK Affiliated (University of Westminster)", focus: "IT Fundamentals, Networking, Cyber Security Basics, Digital Forensics", why: "Strong academic foundation with a direct pathway to a UK-affiliated Cyber Security & Digital Forensics degree after O/L." },
+        { name: "Foundation Certificate in IT (SLIIT)", full: "Sri Lanka Institute of Information Technology", category: "Local (UGC Approved)", focus: "Programming, System Security, Networking, Cyber Security Concepts", why: "Good choice for students planning to continue into a recognized Sri Lankan IT degree specializing in cyber security." },
+        { name: "Diploma in Cyber Security & Ethical Hacking", full: "Local Private Institute Security Course", category: "Local Private Institute", focus: "Ethical Hacking, Infrastructure Security, Server Protection, Security Operations", why: "Best suited for students who prefer practical training and want faster entry into junior cyber security or infrastructure security job roles." }
+      ];
+
+      const aiData = [
+        { name: "Foundation Certificate in Higher Education (IT) – IIT", full: "Informatics Institute of Technology", category: "UK Affiliated (University of Westminster)", focus: "Programming, Data Science basics, AI concepts, Mathematics for Computing", why: "Excellent pathway for students aiming for an international degree in Data Science & AI with strong academic foundations." },
+        { name: "Foundation Certificate in IT – SLIIT", full: "Sri Lanka Institute of Information Technology", category: "Local (UGC Approved)", focus: "IT fundamentals, databases, software development, introductory analytics", why: "Ideal for students who want a recognized Sri Lankan degree pathway with practical IT and Data Science exposure." },
+        { name: "Advanced Diploma in Data Science & AI – NIBM", full: "National Institute of Business Management", category: "Local Govt. / UK Affiliated", focus: "Artificial Intelligence, Machine Learning, Python, Data Analytics", why: "Great for students interested in modern AI technologies and industry-focused practical learning after O/Ls." }
+      ];
+
+      const marketingData = [
+        { name: "Preliminary Certificate in Digital Marketing (PCDM)", full: "Sri Lanka Institute of Marketing (SLIM)", category: "Local Professional Body", focus: "Social Media Marketing, Branding, Content Creation, Basic Advertising", why: "Good starting point for students interested in business, social media, and entrepreneurship after O/Ls." },
+        { name: "Professional Diploma in Digital Marketing", full: "Asia Pacific Institute of Digital Marketing (APIDM)", category: "Asia Pacific Institute", focus: "SEO, Social Media Campaigns, Google Ads, Analytics, Online Branding", why: "Industry-focused qualification with practical skills for freelance work and digital marketing careers." },
+        { name: "Advanced Diploma in Digital Marketing", full: "National Institute of Business Management (NIBM)", category: "Local Government Institute", focus: "Marketing Strategy, Digital Advertising, E-Commerce, Business Communication", why: "Strong pathway to management or marketing degrees while building modern business and online marketing skills." }
+      ];
+
+      const officeData = [
+        { name: "DiTEC (Diploma in Information Technology) / ICDL", full: "ESOFT Metro Campus", category: "Local / Global Standard", focus: "Basic IT skills, MS Office, Computer Literacy, Workplace Technology", why: "Excellent starting qualification for students after O/Ls who want office, clerical, or administrative careers with strong computer knowledge." },
+        { name: "Certificate / Diploma in Computer Applications", full: "National Institute of Business Management (NIBM)", category: "Local Government Institute", focus: "Computer Applications, Data Handling, Office Software, IT Fundamentals", why: "Helps students build practical office and IT skills that can lead to admin assistant, data entry, or junior analyst roles." },
+        { name: "Computer Application Assistant (NVQ Level 3)", full: "Vocational Training Authority (VTA)", category: "Local Government (NVQ Level)", focus: "Practical Computer Usage, Office Systems, Data Entry, Workplace Skills", why: "A job-oriented pathway with NVQ recognition, ideal for students looking for government or private-sector IT support and data-entry opportunities after O/Ls." }
+      ];
+
+      const gamedevData = [
+        { name: "AMDT Game Development Foundations", full: "Academy of Multimedia Design & Technology", category: "Private Academy", focus: "Interactive Mechanics, Interface logic & Visual Layouts", why: "Creative-focused syllabus exploring interactive elements, storyboarding, and custom game engines." },
+        { name: "Unity Junior Programmer Path", full: "Unity Global Training Syllabus", category: "Global Certification", focus: "C# Game Scripting, Physics Simulation, Particle Structures", why: "The absolute industry standard engine certification preparing students to craft interactive mobile games." },
+        { name: "NIBM Diploma in Game Design & Animation", full: "National Institute of Business Management", category: "Local State-Owned", focus: "Collision Mechanics, 2D/3D Asset Designs, Level Logic", why: "Solid structural state-approved diploma combining creative artwork rendering and visual math implementation." }
+      ];
+
+      const langEngData = [
+        { name: "British Council General English", full: "British Council Sri Lanka", category: "Global (UK)", focus: "Speech Clarity, Advanced Syntax & Written Composition", why: "Crucial framework to build baseline corporate communication confidence ahead of university entry." },
+        { name: "Cambridge English: First (FCE)", full: "Cambridge University Press & Assessment", category: "Global (UK)", focus: "Academic Reading & International Articulation", why: "Provides a lifelong, globally validated certificate of fluid English proficiency." }
+      ];
+
+      const langEastData = [
+        { name: "Japanese JLPT N5/N4 Prep", full: "Japanese Language Proficiency Test Track", category: "Global (Japan)", focus: "Kanji Characters, Listening, and Cultural Context", why: "Crucial baseline qualification for students aiming to secure SSW technical worker visas or study in Japan." },
+        { name: "Korean TOPIK I Blueprint", full: "Test of Proficiency in Korean", category: "Global (Korea)", focus: "Hangul Script, Core Conversational Fluency", why: "The essential state path required to participate in government-managed jobs in South Korea." }
+      ];
+
+      const langEuroData = [
+        { name: "DELF A1/A2 French", full: "Alliance Française de Kotte", category: "Global (France)", focus: "Conversational European Accents & Basic Syntax", why: "Highly valued asset in hospitality, global corporate trade, and diplomatic entry positions." },
+        { name: "Goethe-Zertifikat A1 German", full: "Goethe-Institut Sri Lanka", category: "Global (Germany)", focus: "Structured Vocabulary & Core Dialogue Delivery", why: "Unlocks affordable higher education options directly within Germany's free university ecosystems." }
+      ];
+
+      const nvqEngData = [
+        { name: "Automobile Mechanic (NVQ 3/4)", full: "Vocational Training Authority (VTA) / German Tech", category: "Local State-Owned", focus: "Internal Combustion Systems & Electronic Diagnostics", why: "High practical industry integration; rapid track to foreign vehicle technician placement." },
+        { name: "Industrial Electrician (NVQ 3/4)", full: "National Apprentice and Industrial Training Authority (NAITA)", category: "Local State-Owned", focus: "Commercial Wiring Blueprints & Phase Maintenance", why: "Immediate path to self-employment, building registry contracts, or corporate technician hiring." }
+      ];
+
+      const nvqHospData = [
+        { name: "Professional Cookery (NVQ 3/4)", full: "Sri Lanka Institute of Tourism & Hotel Management (SLITHM)", category: "Local State-Owned", focus: "Global Culinary Arts, Kitchen Hygiene & Menu Layouts", why: "The primary golden passport qualification used to access cruise ship placement and Western hospitality migration." }
+      ];
+
+      const nvqCreativeData = [
+        { name: "NVQ Hairdressing & Beauty Therapy", full: "VTA / National Youth Services Council (NYSC)", category: "Local State-Owned", focus: "Cosmetology Science, Salon Operations & Creative Styling", why: "Exceptional independent commercial path allowing O/L students to launch direct personal enterprises early." }
+      ];
+
+      // ── STATE ENGINE ──
+      const state = {
+        viewHistory: ["home"],
+        user: (() => {
+          try {
+            const saved = localStorage.getItem("cpf_user");
+            return saved ? JSON.parse(saved) : null;
+          } catch { return null; }
+        })(),
+        theme: localStorage.getItem("ds_theme") === "light" ? "light" : "dark",
+        savedPaths: (() => {
+          try {
+            const saved = localStorage.getItem("ds_saved_paths");
+            return saved ? JSON.parse(saved) : [];
+          } catch { return []; }
+        })(),
+        detailRef: null, // { type: 'ol' | 'al', key: '...' }
+        expandedKeys: {}, // Record of prefix-idx -> boolean
+        usernameInput: "",
+        emailInput: ""
+      };
+
+      // Apply initial theme on startup
+      const rootHtml = document.documentElement;
+      if (state.theme === "light") {
+        rootHtml.classList.add("light");
+        rootHtml.classList.remove("dark");
+      } else {
+        rootHtml.classList.add("dark");
+        rootHtml.classList.remove("light");
+      }
+
+      // Check automatically on start to route to dashboard if logged in
+      if (state.user) {
+        state.viewHistory = ["dashboard"];
+      }
+
+      // ── TYPEWRITER TEXT CONFIG ──
+      let typewriterText = "";
+      let isDeleting = false;
+      let phraseIndex = 0;
+      let charIndex = 0;
+      const typewriterPhrases = [
+        "Explore career options tailored for Sri Lankan students after O/Levels and A/Levels",
+        "Discover the right course for your strengths and interests",
+        "Your future starts with the right choice today",
+        "From O/Levels to a career you love — we'll guide you there"
+      ];
+
+      function runTypewriter() {
+        const textEl = document.getElementById("typewriterTextEl");
+        if (!textEl) {
+          setTimeout(runTypewriter, 100);
+          return;
+        }
+
+        const currentPhrase = typewriterPhrases[phraseIndex];
+
+        if (!isDeleting) {
+          if (charIndex < currentPhrase.length) {
+            typewriterText = currentPhrase.substring(0, charIndex + 1);
+            charIndex++;
+            textEl.textContent = typewriterText;
+            setTimeout(runTypewriter, 38);
+          } else {
+            setTimeout(() => {
+              isDeleting = true;
+              runTypewriter();
+            }, 2400);
+          }
+        } else {
+          if (charIndex > 0) {
+            typewriterText = currentPhrase.substring(0, charIndex - 1);
+            charIndex--;
+            textEl.textContent = typewriterText;
+            setTimeout(runTypewriter, 18);
+          } else {
+            isDeleting = false;
+            phraseIndex = (phraseIndex + 1) % typewriterPhrases.length;
+            setTimeout(runTypewriter, 420);
+          }
+        }
+      }
+
+      // ── ROUTING NAVIGATION ──
+      function navigateTo(view) {
+        state.viewHistory.push(view);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        render();
+      }
+
+      function navigateBack() {
+        if (state.viewHistory.length <= 1) {
+          state.viewHistory = ["home"];
+        } else {
+          state.viewHistory.pop();
+        }
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        render();
+      }
+
+      function goHome() {
+        state.viewHistory = [state.user ? "dashboard" : "home"];
+        window.scrollTo({ top: 0, behavior: "smooth" });
+        render();
+      }
+
+      // ── ACTIONS & HANDLERS ──
+      function toggleTheme() {
+        state.theme = state.theme === "light" ? "dark" : "light";
+        localStorage.setItem("ds_theme", state.theme);
+        
+        if (state.theme === "light") {
+          rootHtml.classList.add("light");
+          rootHtml.classList.remove("dark");
+        } else {
+          rootHtml.classList.add("dark");
+          rootHtml.classList.remove("light");
+        }
+        render();
+      }
+
+      function toggleSavePath(type, key, e) {
+        if (e) e.stopPropagation();
+        const exists = state.savedPaths.some((p) => p.type === type && p.key === key);
+        if (exists) {
+          state.savedPaths = state.savedPaths.filter((p) => !(p.type === type && p.key === key));
+        } else {
+          state.savedPaths.push({ type, key });
+        }
+        localStorage.setItem("ds_saved_paths", JSON.stringify(state.savedPaths));
+        render();
+      }
+
+      function handleSavedPathClick(type, key) {
+        if (type === "ol" && ["it", "languages", "nvq", "commerce"].includes(key)) {
+          navigateTo(key);
+        } else {
+          state.detailRef = { type, key };
+          navigateTo("detail");
+        }
+      }
+
+      function toggleAccordionRow(prefix, idx) {
+        const key = `${prefix}-${idx}`;
+        state.expandedKeys[key] = !state.expandedKeys[key];
+        
+        // Dynamically toggle inline maxHeight of accordion element for premium smooth opening
+        const el = document.getElementById(`acc-body-${key}`);
+        if (el) {
+          if (state.expandedKeys[key]) {
+            el.style.maxHeight = el.scrollHeight + "px";
+          } else {
+            el.style.maxHeight = "0px";
+          }
+        }
+        
+        // Rotate chevron
+        const chev = document.getElementById(`chev-${key}`);
+        if (chev) {
+          chev.style.transform = state.expandedKeys[key] ? "rotate(180deg)" : "rotate(0deg)";
+        }
+      }
+
+      function submitLogin(e) {
+        if (e) e.preventDefault();
+        const usernameVal = document.getElementById("name-input").value.trim();
+        const emailVal = document.getElementById("email-input").value.trim();
+        if (!emailVal) return;
+
+        const userObj = { name: usernameVal || "Student", email: emailVal };
+        state.user = userObj;
+        localStorage.setItem("cpf_user", JSON.stringify(userObj));
+        state.viewHistory = ["dashboard"];
+        render();
+      }
+
+      function handleLogout() {
+        state.user = null;
+        localStorage.removeItem("cpf_user");
+        state.viewHistory = ["home"];
+        render();
+      }
+
+      function getOriginClass(category) {
+        const cat = category.toLowerCase();
+        if (cat.includes("global") && cat.includes("chartered")) return "chartered";
+        if (
+          cat.includes("global") ||
+          cat.includes("academic") ||
+          cat.includes("university") ||
+          cat.includes("uk") ||
+          cat.includes("btec") ||
+          cat.includes("affiliated")
+        )
+          return "global";
+        if (cat.includes("local") && cat.includes("chartered")) return "chartered";
+        return "local";
+      }
+
+      // ── ACCORDION LISTS RENDERER ──
+      function renderCareerAccordions(dataList, prefix) {
+        return `
+          <div class="ql-list">
+            ${dataList.map((item, idx) => {
+              const key = `${prefix}-${idx}`;
+              const isOpen = !!state.expandedKeys[key];
+              const originLabel = item.category || item.origin || "";
+              const originClass = getOriginClass(originLabel);
+
+              return `
+                <div class="ql-item" style="animation-delay: ${idx * 0.05}s">
+                  <button class="ql-header" onclick="toggleAccordionRow('${prefix}', ${idx})">
+                    <div class="ql-left">
+                      <span class="ql-name">${item.name}</span>
+                      <span class="ql-full">${item.full || ''}</span>
+                    </div>
+                    <div class="ql-right">
+                      <span class="ql-origin ${originClass}">${originLabel}</span>
+                      <span id="chev-${key}" class="ql-chevron inline-block transition-transform duration-250" style="transform: ${isOpen ? 'rotate(180deg)' : 'rotate(0deg)'}">
+                        ▾
+                      </span>
+                    </div>
+                  </button>
+                  <div id="acc-body-${key}" class="ql-body" style="max-height: ${isOpen ? '400px' : '0px'}">
+                    <div class="ql-inner">
+                      <div>
+                        <div class="ql-cell-label">Primary Focus Area</div>
+                        <div class="ql-cell-val">${item.focus}</div>
+                      </div>
+                      <div>
+                        <div class="ql-cell-label">Why it's great after school</div>
+                        <div class="ql-cell-val">${item.why}</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              `;
+            }).join('')}
+          </div>
+        `;
+      }
+
+      // ── CORE RENDERING ROUTINES ──
+      function render() {
+        const app = document.getElementById("app");
+        const activeView = state.viewHistory[state.viewHistory.length - 1] || "home";
+
+        // Generate Navbar
+        let navHtml = `
+          <header>
+            <div class="logo" onclick="goHome()" title="Go to home">
+              <div class="logo-container">
+                <svg viewBox="0 0 32 32" fill="none" class="w-6 h-6">
+                  <defs>
+                    <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stop-color="var(--green)" />
+                      <stop offset="100%" stop-color="var(--purple)" />
+                    </linearGradient>
+                  </defs>
+                  <path d="M6 24C6 24 10 12 20 12" stroke="url(#logoGrad)" stroke-width="4.5" stroke-linecap="round" />
+                  <path d="M14 12H20V18" stroke="url(#logoGrad)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" />
+                  <path d="M26 6L24 8L26 10L28 8L26 6Z" fill="url(#logoGrad)" />
+                </svg>
+              </div>
+              UpskillLanka
+            </div>
+            <div class="flex items-center gap-2.5">
+              <button class="theme-toggle" id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle theme">
+                <div class="theme-toggle-thumb">${state.theme === "light" ? "☀️" : "🌙"}</div>
+              </button>
+              <div class="flex gap-2">
+                ${state.user ? `
+                  <button class="btn btn-outline" onclick="navigateTo('dashboard')">Profile</button>
+                  <button class="btn btn-outline" onclick="handleLogout()">Sign out</button>
+                ` : `
+                  <button class="btn btn-outline" onclick="navigateTo('login')">Login</button>
+                  <button class="btn btn-solid" onclick="navigateTo('login')">Sign Up</button>
+                `}
+              </div>
+            </div>
+          </header>
+        `;
+
+        // Generate Screen layouts
+        let screenHtml = "";
+
+        if (activeView === "home") {
+          screenHtml = `
+            <section id="home" class="relative min-h-[calc(100vh-58px)] flex flex-col items-center justify-center px-5 py-12 md:pb-24 text-center">
+              <!-- Premium Flowing Background Shapes & Waves -->
+              <div class="home-bg-animation">
+                <div class="wave-layer animate-wave-slow opacity-25" id="waveLayer1" style="transform: scale(1.05);">
+                  <svg class="absolute bottom-0 w-[200vw] h-[400px] left-[-50vw]" viewBox="0 0 1440 320" fill="none">
+                    <path fill="rgba(0, 229, 160, 0.12)" d="M0,160L40,176C80,192,160,224,240,208C320,192,400,128,480,117.3C560,107,640,149,720,181.3C800,213,880,235,960,218.7C1040,203,1120,149,1200,128C1280,107,1360,117,1400,122.7L1440,128L1440,320L1400,320C1360,320,1280,320,1200,320C1120,320,1040,320,960,320C880,320,800,320,720,320C640,320,560,320,480,320C400,320,320,320,240,320C160,320,80,320,40,320L0,320Z"></path>
+                  </svg>
+                </div>
+                <div class="wave-layer animate-wave-medium opacity-20" id="waveLayer2" style="transform: scale(1.08);">
+                  <svg class="absolute bottom-0 w-[200vw] h-[360px] left-[-40vw]" viewBox="0 0 1440 320" fill="none">
+                    <path fill="rgba(168, 85, 247, 0.14)" d="M0,224L60,208C120,192,240,160,360,160C480,160,600,192,720,197.3C840,203,960,181,1080,165.3C1200,149,1320,139,1380,133.3L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+                  </svg>
+                </div>
+                <div class="wave-layer animate-wave-fast opacity-15" id="waveLayer3" style="transform: scale(1.10);">
+                  <svg class="absolute bottom-0 w-[200vw] h-[440px] left-[-60vw]" viewBox="0 0 1440 320" fill="none">
+                    <path fill="rgba(0, 229, 160, 0.08)" d="M0,96L80,112C160,128,320,160,480,149.3C640,139,800,85,960,85.3C1120,85,1280,139,1360,165.3L1440,192L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path>
+                  </svg>
+                </div>
+                <div class="wave-layer animate-wave-extra opacity-10" id="waveLayer4" style="transform: scale(1.05);">
+                  <svg class="absolute bottom-0 w-[200vw] h-[300px] left-[-30vw]" viewBox="0 0 1440 320" fill="none">
+                    <path fill="rgba(168, 85, 247, 0.08)" d="M0,192L60,181.3C120,171,240,149,360,165.3C480,181,600,235,720,240C840,245,960,203,1080,176C1200,149,1320,139,1380,133.3L1440,128L1440,320L1380,320C1320,320,1200,320,1080,320C960,320,840,320,720,320C600,320,480,320,360,320C240,320,120,320,60,320L0,320Z"></path>
+                  </svg>
+                </div>
+                <!-- Interactive Ambient Orbs -->
+                <div class="ambient-orb bg-purple-500/25 w-[450px] h-[450px] top-10 left-[-100px]" id="orb1" style="animation: drift-slow 22s infinite alternate ease-in-out;"></div>
+                <div class="ambient-orb bg-emerald-500/20 w-[420px] h-[420px] bottom-10 right-[-100px]" id="orb2" style="animation: drift-medium 18s infinite alternate-reverse ease-in-out;"></div>
+              </div>
+
+              <div class="relative z-10 max-w-4xl mx-auto flex flex-col items-center">
+                <div class="pill">Sri Lanka's Career Guide</div>
+                <h1 class="hero-h1">
+                  Find your <span class="grad">perfect path</span> after exams
+                </h1>
+                <p class="hero-sub min-h-[2.8em] flex items-center justify-center">
+                  <span class="typewriter-wrap whitespace-normal" id="typewriterTextEl">${typewriterText}</span>
+                  <span class="typewriter-cursor"></span>
+                </p>
+
+                <div class="home-cards">
+                  <div class="home-card g" onclick="navigateTo('ol')">
+                    <div class="hc-icon g">🎓</div>
+                    <h3>After O/L</h3>
+                    <p>Courses, vocational training & streams after O/Level exams</p>
+                    <div class="hc-cta">Explore options →</div>
+                  </div>
+                  <div class="home-card p" onclick="navigateTo('al')">
+                    <div class="hc-icon p">🚀</div>
+                    <h3>After A/L</h3>
+                    <p>University degrees, certifications & professional careers</p>
+                    <div class="hc-cta">Explore options →</div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "dashboard") {
+          const statsCount = state.savedPaths.length;
+          let savedCardsHtml = "";
+
+          if (statsCount === 0) {
+            savedCardsHtml = `
+              <div class="text-center py-10 px-5 bg-[var(--surf)] border border-[var(--border)] rounded-2xl flex flex-col items-center justify-center shadow-inner">
+                <div class="w-12 h-12 rounded-full bg-rose-500/10 flex items-center justify-center text-rose-500 text-xl mb-4 animate-pulse">
+                  ❤️
+                </div>
+                <h4 class="font-display text-base font-semibold mb-1 text-[var(--text)]">Your career vault is empty</h4>
+                <p class="text-xs md:text-sm text-[var(--muted)] max-w-sm">
+                  Start exploring O/Level and A/Level paths, and click the heart on any card to save it here for quick access.
+                </p>
+                <div class="flex gap-3 mt-5">
+                  <button class="btn btn-outline hover:border-gray-400 py-1.5 px-3.5" onclick="navigateTo('ol')">Browse O/Ls</button>
+                  <button class="btn btn-outline hover:border-gray-400 py-1.5 px-3.5" onclick="navigateTo('al')">Browse A/Ls</button>
+                </div>
+              </div>
+            `;
+          } else {
+            savedCardsHtml = `
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                ${state.savedPaths.map(({ type, key }) => {
+                  const item = type === "ol" ? olData[key] : alData[key];
+                  if (!item) return "";
+                  return `
+                    <div class="cc relative" onclick="handleSavedPathClick('${type}', '${key}')">
+                      <button class="absolute top-3 right-3 z-20 cursor-pointer p-2 rounded-full border bg-rose-500/15 border-rose-500/30 text-rose-500 shadow-sm hover:scale-115 active:scale-95 transition-all duration-200 outline-none flex items-center justify-center" onclick="toggleSavePath('${type}', '${key}', event)">
+                        <i data-lucide="heart" class="w-4 h-4 text-rose-500 fill-rose-500"></i>
+                      </button>
+                      <div class="cc-emoji">${item.emoji ?? "🎓"}</div>
+                      <h3 class="pr-8">${item.title}</h3>
+                      <p>${item.desc}</p>
+                      <div class="cc-foot">
+                        <span class="tag ${item.tag}">${item.tagText}</span>
+                        <div class="arr">→</div>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            `;
+          }
+
+          screenHtml = `
+            <section id="dashboard" class="px-6 py-9 max-w-[920px] mx-auto animate-up">
+              <h2 class="font-display text-2xl md:text-3.5xl font-medium mb-[22px]">Welcome back 👋</h2>
+              ${state.user ? `
+                <div class="profile-card">
+                  <div class="avatar">
+                    ${state.user.name.split(" ").map((n) => n[0]).join("").toUpperCase().slice(0, 2)}
+                  </div>
+                  <div class="pi">
+                    <h3>${state.user.name}</h3>
+                    <p>${state.user.email}</p>
+                  </div>
+                </div>
+              ` : ""}
+
+              <div class="ex-row">
+                <button class="ex-btn g" onclick="navigateTo('ol')">
+                  <span>After O/L Paths</span>
+                  <span style="color: var(--green)">→</span>
+                </button>
+                <button class="ex-btn p" onclick="navigateTo('al')">
+                  <span>After A/L Paths</span>
+                  <span style="color: var(--purple)">→</span>
+                </button>
+              </div>
+
+              <!-- Saved Pathways -->
+              <div class="mt-12">
+                <div class="flex items-center justify-between mb-6 pb-2 border-b border-[var(--border)]">
+                  <h3 class="font-display text-xl md:text-2xl font-medium flex items-center gap-2">
+                    <i data-lucide="heart" class="w-5 h-5 text-rose-500 fill-rose-500"></i>
+                    Saved Pathways
+                  </h3>
+                  ${statsCount > 0 ? `
+                    <span class="text-xs bg-[var(--surf2)] px-2.5 py-1 rounded-full text-[var(--muted)] font-semibold border border-[var(--border)]">
+                      ${statsCount} saved
+                    </span>
+                  ` : ""}
+                </div>
+                ${savedCardsHtml}
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "ol") {
+          screenHtml = `
+            <section id="ol" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>After O/L</b></span>
+              </div>
+              <div class="ph">
+                <h2>After O/Level</h2>
+                <p>Choose a path that matches your interests and goals</p>
+              </div>
+              <div id="olGrid" class="card-grid">
+                ${Object.entries(olData).map(([key, item], idx) => {
+                  const isSaved = state.savedPaths.some((p) => p.type === "ol" && p.key === key);
+                  return `
+                    <div class="cc relative" onclick="navigateTo('${key}')" style="animation-delay: ${idx * 0.06}s">
+                      <button class="absolute top-3 right-3 z-20 cursor-pointer p-2 rounded-full border transition-all duration-200 outline-none hover:scale-115 active:scale-90 flex items-center justify-center ${
+                        isSaved
+                          ? 'bg-rose-500/15 border-rose-500/30 text-rose-500 shadow-sm'
+                          : 'bg-black/10 hover:bg-black/20 light:bg-white/5 border-transparent text-gray-400 hover:text-rose-500'
+                      }" onclick="toggleSavePath('ol', '${key}', event)">
+                        <i data-lucide="heart" class="w-4 h-4" ${isSaved ? 'fill="currentColor"' : 'fill="none"'}></i>
+                      </button>
+                      <div class="cc-emoji">${item.emoji ?? "🎓"}</div>
+                      <h3>${item.title}</h3>
+                      <p>${item.desc}</p>
+                      <div class="cc-foot">
+                        <span class="tag ${item.tag}">${item.tagText}</span>
+                        <div class="arr">→</div>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "al") {
+          screenHtml = `
+            <section id="al" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>After A/L</b></span>
+              </div>
+              <div class="ph">
+                <h2>After A/Level</h2>
+                <p>Take the next big step in your academic journey</p>
+              </div>
+              <div id="alGrid" class="card-grid">
+                ${Object.entries(alData).map(([key, item], idx) => {
+                  const isSaved = state.savedPaths.some((p) => p.type === "al" && p.key === key);
+                  return `
+                    <div class="cc relative" onclick="state.detailRef = { type: 'al', key: '${key}' }; navigateTo('detail');" style="animation-delay: ${idx * 0.06}s">
+                      <button class="absolute top-3 right-3 z-20 cursor-pointer p-2 rounded-full border transition-all duration-200 outline-none hover:scale-115 active:scale-90 flex items-center justify-center ${
+                        isSaved
+                          ? 'bg-rose-500/15 border-rose-500/30 text-rose-500 shadow-sm'
+                          : 'bg-black/10 hover:bg-black/20 light:bg-white/5 border-transparent text-gray-400 hover:text-rose-500'
+                      }" onclick="toggleSavePath('al', '${key}', event)">
+                        <i data-lucide="heart" class="w-4 h-4" ${isSaved ? 'fill="currentColor"' : 'fill="none"'}></i>
+                      </button>
+                      <div class="cc-emoji">${item.emoji ?? "🎓"}</div>
+                      <h3>${item.title}</h3>
+                      <p>${item.desc}</p>
+                      <div class="cc-foot">
+                        <span class="tag ${item.tag}">${item.tagText}</span>
+                        <div class="arr">→</div>
+                      </div>
+                    </div>
+                  `;
+                }).join("")}
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "detail") {
+          if (!state.detailRef) {
+            screenHtml = `<div class="p-10 text-center">No Pathway Selected</div>`;
+          } else {
+            const { type, key } = state.detailRef;
+            const item = type === "ol" ? olData[key] : alData[key];
+            const isSaved = state.savedPaths.some((p) => p.type === type && p.key === key);
+            
+            screenHtml = `
+              <section id="detail" class="px-6 py-4 animate-up">
+                <div class="sub-nav">
+                  <button class="back-btn" onclick="navigateBack()">← Back</button>
+                </div>
+                <div id="detailBox" class="mx-auto mt-6">
+                  <div class="flex justify-between items-start mb-4">
+                    <div class="di-emoji">${item.emoji ?? "🎓"}</div>
+                    <button class="cursor-pointer px-4 py-1.5 rounded-full border transition-all duration-200 outline-none flex items-center gap-2 text-xs md:text-sm font-semibold hover:scale-105 active:scale-95 ${
+                      isSaved
+                        ? 'bg-rose-500/15 border-rose-500/30 text-rose-500 shadow-sm'
+                        : 'bg-[var(--surf2)] hover:bg-[var(--surf2)] border-[var(--border)] text-[var(--muted)] hover:text-rose-500'
+                    }" onclick="toggleSavePath('${type}', '${key}', event)">
+                      <i data-lucide="heart" class="w-3.5 h-3.5" ${isSaved ? 'fill="currentColor"' : 'fill="none"'}></i>
+                      ${isSaved ? "Saved" : "Save Pathway"}
+                    </button>
+                  </div>
+                  <h2>${item.title}</h2>
+                  <p class="di-desc">${item.desc}</p>
+                  <div class="di-grid">
+                    <div class="di-block">
+                      <div class="di-label">✦ Why choose this</div>
+                      <div class="di-val">${item.cause}</div>
+                    </div>
+                    <div class="di-block">
+                      <div class="di-label">✦ Key benefits</div>
+                      <div class="di-val">${item.benefit}</div>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            `;
+          }
+        }
+
+        else if (activeView === "commerce") {
+          screenHtml = `
+            <section id="commerce" class="px-6 py-4 animate-up">
+              <div class="sub-nav flex-wrap">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>After O/L</b> / <b>Commerce Stream</b></span>
+              </div>
+              <div class="ph">
+                <h2>Commerce Stream</h2>
+                <p>Select a course category to explore your options</p>
+              </div>
+              <div class="cat-grid">
+                <div class="cat-btn af" onclick="navigateTo('commerce-af')">
+                  <div class="cat-btn-icon">💰</div>
+                  <div class="cat-btn-title">Accounting & Finance Courses</div>
+                  <div class="cat-btn-sub">AAT, ACCA, CIMA, CMA & more</div>
+                </div>
+                <div class="cat-btn biz" onclick="navigateTo('commerce-biz')">
+                  <div class="cat-btn-icon">📈</div>
+                  <div class="cat-btn-title">Business Courses</div>
+                  <div class="cat-btn-sub">Management, Marketing & Entrepreneurship</div>
+                </div>
+                <div class="cat-btn itc" onclick="navigateTo('commerce-itc')">
+                  <div class="cat-btn-icon">💻</div>
+                  <div class="cat-btn-title">IT + Commerce Courses</div>
+                  <div class="cat-btn-sub">Digital Business, E-Commerce & Fintech Pathways</div>
+                </div>
+                <div class="cat-btn bank" onclick="navigateTo('commerce-bo')">
+                  <div class="cat-btn-icon">🏦</div>
+                  <div class="cat-btn-title">Banking & Office</div>
+                  <div class="cat-btn-sub">Banking, Admin & Office Management</div>
+                </div>
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "commerce-af") {
+          screenHtml = `
+            <section id="commerce-af" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>Commerce</b> / <b>Accounting</b></span>
+              </div>
+              <div class="ph">
+                <h2>Accounting & Finance</h2>
+                <p>Professional credentials right after O/Levels</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(afData, "af")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "commerce-biz") {
+          screenHtml = `
+            <section id="commerce-biz" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>Commerce</b> / <b>Business</b></span>
+              </div>
+              <div class="ph">
+                <h2>Business Management & HR</h2>
+                <p>Corporate management entry certifications</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(bizData, "biz")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "commerce-itc") {
+          screenHtml = `
+            <section id="commerce-itc" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>Commerce</b> / <b>IT + Commerce</b></span>
+              </div>
+              <div class="ph">
+                <h2>IT + Commerce Courses</h2>
+                <p>Commerce tech and e-commerce credentials</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(itcData, "itc")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "commerce-bo") {
+          screenHtml = `
+            <section id="commerce-bo" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>Commerce</b> / <b>Banking</b></span>
+              </div>
+              <div class="ph">
+                <h2>Banking & Office Structures</h2>
+                <p>Administrative and operational career tracks</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(boData, "bo")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it") {
+          screenHtml = `
+            <section id="it" class="px-6 py-4 animate-up">
+              <div class="sub-nav flex-wrap">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>After O/L</b> / <b>IT & Tech</b></span>
+              </div>
+              <div class="ph">
+                <h2>IT & Technology</h2>
+                <p>Select an IT and Technology pathway to start your career early</p>
+              </div>
+              <div class="cat-grid">
+                <div class="cat-btn af" onclick="navigateTo('it-se')">
+                  <div class="cat-btn-icon">💻</div>
+                  <div class="cat-btn-title">Software Engineering</div>
+                  <div class="cat-btn-sub">IIT Westminster, SLIIT foundations, NIBM Advanced & ESOFT BTECs</div>
+                </div>
+                <div class="cat-btn biz" onclick="navigateTo('it-web')">
+                  <div class="cat-btn-icon">🌐</div>
+                  <div class="cat-btn-title">Web Development</div>
+                  <div class="cat-btn-sub">NIBM Web Engineering, ESOFT Diplomas, Wijeya UI & OUSL Basics</div>
+                </div>
+                <div class="cat-btn itc" onclick="navigateTo('it-graphics')">
+                  <div class="cat-btn-icon">🎨</div>
+                  <div class="cat-btn-title">Graphic Design & Multimedia</div>
+                  <div class="cat-btn-sub">AMDT Foundations, AOD Portfolios, Wijeya Animations & NIBM Production</div>
+                </div>
+                <div class="cat-btn bank" onclick="navigateTo('it-network')">
+                  <div class="cat-btn-icon">🔌</div>
+                  <div class="cat-btn-title">Hardware & Networking</div>
+                  <div class="cat-btn-sub">Computer maintenance, servers, troubleshooting & assembly foundations</div>
+                </div>
+                <div class="cat-btn af" onclick="navigateTo('it-cyber')">
+                  <div class="cat-btn-icon">🛡️</div>
+                  <div class="cat-btn-title">Cyber Security</div>
+                  <div class="cat-btn-sub">Ethical hacking, penetration testing, network defense & forensics foundations</div>
+                </div>
+                <div class="cat-btn biz" onclick="navigateTo('it-ai')">
+                  <div class="cat-btn-icon">🤖</div>
+                  <div class="cat-btn-title">AI & Data Science</div>
+                  <div class="cat-btn-sub">Python, AI foundations, statistics models & modern data analytics</div>
+                </div>
+                <div class="cat-btn itc" onclick="navigateTo('it-marketing')">
+                  <div class="cat-btn-icon">📈</div>
+                  <div class="cat-btn-title">Digital Marketing</div>
+                  <div class="cat-btn-sub">SEO, Social Media Campaigns, Google Ads, Analytics & PCDM courses</div>
+                </div>
+                <div class="cat-btn bank" onclick="navigateTo('it-office')">
+                  <div class="cat-btn-icon">📁</div>
+                  <div class="cat-btn-title">Office & Business IT</div>
+                  <div class="cat-btn-sub">DiTEC, computer applications, basic computer literacy & office tech systems</div>
+                </div>
+                <div class="cat-btn af" onclick="navigateTo('it-gamedev')">
+                  <div class="cat-btn-icon">🎮</div>
+                  <div class="cat-btn-title">Game Development</div>
+                  <div class="cat-btn-sub">Unity, 2D/3D assets, physics & scripting</div>
+                </div>
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-se") {
+          screenHtml = `
+            <section id="it-se" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Software Engineering</b></span>
+              </div>
+              <div class="ph">
+                <h2>Software Engineering Courses</h2>
+                <p>Pathways including foreign UK-affiliated platforms & local programs</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(seData, "se")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-web") {
+          screenHtml = `
+            <section id="it-web" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Web Development</b></span>
+              </div>
+              <div class="ph">
+                <h2>Web Development Courses</h2>
+                <p>Master responsive designs, full-stack technologies, frontend, backend & UI/UX portfolios</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(webData, "web")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-graphics") {
+          screenHtml = `
+            <section id="it-graphics" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Graphic & Multimedia</b></span>
+              </div>
+              <div class="ph">
+                <h2>Graphic Design & Multimedia Courses</h2>
+                <p>Acquire aesthetic design mechanics, user experience rules, digital rendering skills, and production credentials</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(graphicsData, "graphics")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-network") {
+          screenHtml = `
+            <section id="it-network" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Hardware & Networking</b></span>
+              </div>
+              <div class="ph">
+                <h2>Hardware & Networking Courses</h2>
+                <p>Learn configuration systems, PC assembly diagnostics, and technical network topologies</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(networkData, "network")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-cyber") {
+          screenHtml = `
+            <section id="it-cyber" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Cyber Security</b></span>
+              </div>
+              <div class="ph">
+                <h2>Cyber Security Courses</h2>
+                <p>Identify weaknesses, protect infrastructure assets, and practice secure defense methods</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(cyberData, "cyber")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-ai") {
+          screenHtml = `
+            <section id="it-ai" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>AI & Data Science</b></span>
+              </div>
+              <div class="ph">
+                <h2>AI & Data Science Courses</h2>
+                <p>Introduce statistics models, artificial intelligence programs, and smart analytical workflows</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(aiData, "ai")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-marketing") {
+          screenHtml = `
+            <section id="it-marketing" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Digital Marketing</b></span>
+              </div>
+              <div class="ph">
+                <h2>Digital Marketing Courses</h2>
+                <p>Leverage content campaigns, organic search ranking strategies, and commercial tracking</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(marketingData, "marketing")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-office") {
+          screenHtml = `
+            <section id="it-office" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Office & Business IT</b></span>
+              </div>
+              <div class="ph">
+                <h2>Office & Business IT Courses</h2>
+                <p>Advance administrative database records, computer literacy and digital spreadsheet capabilities</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(officeData, "office")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "it-gamedev") {
+          screenHtml = `
+            <section id="it-gamedev" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>IT & Tech</b> / <b>Game Development</b></span>
+              </div>
+              <div class="ph">
+                <h2>Game Development Courses</h2>
+                <p>Craft real-time physical simulation maps, character mechanics, and level logic</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(gamedevData, "gamedev")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "languages") {
+          screenHtml = `
+            <section id="languages" class="px-6 py-4 animate-up">
+              <div class="sub-nav flex-wrap">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>After O/L</b> / <b>Languages</b></span>
+              </div>
+              <div class="ph">
+                <h2>Language Pathways</h2>
+                <p>Build global communication skills right after school</p>
+              </div>
+              <div class="cat-grid">
+                <div class="cat-btn biz" onclick="navigateTo('lang-eng')">
+                  <div class="cat-btn-icon">🇬🇧</div>
+                  <div class="cat-btn-title">English Qualifications</div>
+                  <div class="cat-btn-sub">IELTS Prep, Cambridge & Business English</div>
+                </div>
+                <div class="cat-btn af" onclick="navigateTo('lang-east')">
+                  <div class="cat-btn-icon">🇯🇵</div>
+                  <div class="cat-btn-title">East Asian Languages</div>
+                  <div class="cat-btn-sub">Japanese (JLPT), Korean (TOPIK) & Chinese</div>
+                </div>
+                <div class="cat-btn bank" onclick="navigateTo('lang-euro')">
+                  <div class="cat-btn-icon">🇫🇷</div>
+                  <div class="cat-btn-title">European Languages</div>
+                  <div class="cat-btn-sub">French, German & Italian Options</div>
+                </div>
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "lang-eng") {
+          screenHtml = `
+            <section id="lang-eng" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>Languages</b> / <b>English</b></span>
+              </div>
+              <div class="ph">
+                <h2>English Qualifications</h2>
+                <p>Advanced standard English paths</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(langEngData, "le")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "lang-east") {
+          screenHtml = `
+            <section id="lang-east" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>Languages</b> / <b>East Asian</b></span>
+              </div>
+              <div class="ph">
+                <h2>East Asian Languages</h2>
+                <p>High employment demand migration frameworks</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(langEastData, "lea")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "lang-euro") {
+          screenHtml = `
+            <section id="lang-euro" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>Languages</b> / <b>European</b></span>
+              </div>
+              <div class="ph">
+                <h2>European Languages</h2>
+                <p>Global professional credentials</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(langEuroData, "leu")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "nvq") {
+          screenHtml = `
+            <section id="nvq" class="px-6 py-4 animate-up">
+              <div class="sub-nav flex-wrap">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>After O/L</b> / <b>NVQ Vocational</b></span>
+              </div>
+              <div class="ph">
+                <h2>NVQ Skills Training</h2>
+                <p>Hands-on practical fields certified by the government</p>
+              </div>
+              <div class="cat-grid">
+                <div class="cat-btn bank" onclick="navigateTo('nvq-eng')">
+                  <div class="cat-btn-icon">🔧</div>
+                  <div class="cat-btn-title">Engineering & Mechanical</div>
+                  <div class="cat-btn-sub">Automobile, Electrical Wiring & Machining</div>
+                </div>
+                <div class="cat-btn af" onclick="navigateTo('nvq-hosp')">
+                  <div class="cat-btn-icon">🍳</div>
+                  <div class="cat-btn-title">Hospitality & Culinary</div>
+                  <div class="cat-btn-sub">Professional Cookery, Baking & Hotel Operations</div>
+                </div>
+                <div class="cat-btn biz" onclick="navigateTo('nvq-creative')">
+                  <div class="cat-btn-icon">✂️</div>
+                  <div class="cat-btn-title">Creative Trades</div>
+                  <div class="cat-btn-sub">Fashion Design, Hairdressing & Beauty Therapy</div>
+                </div>
+              </div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "nvq-eng") {
+          screenHtml = `
+            <section id="nvq-eng" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>NVQ</b> / <b>Engineering</b></span>
+              </div>
+              <div class="ph">
+                <h2>Engineering & Mechanical Trades</h2>
+                <p>Technical industrial specializations</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(nvqEngData, "ne")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "nvq-hosp") {
+          screenHtml = `
+            <section id="nvq-hosp" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>NVQ</b> / <b>Hospitality</b></span>
+              </div>
+              <div class="ph">
+                <h2>Hospitality & Culinary Arts</h2>
+                <p>Global tourist industry paths</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(nvqHospData, "nh")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "nvq-creative") {
+          screenHtml = `
+            <section id="nvq-creative" class="px-6 py-4 animate-up">
+              <div class="sub-nav">
+                <button class="back-btn" onclick="navigateBack()">← Back</button>
+                <span class="crumb">/ <b>NVQ</b> / <b>Creative</b></span>
+              </div>
+              <div class="ph">
+                <h2>Creative & Beauty Trades</h2>
+                <p>Apparel and salon enterprise blueprints</p>
+              </div>
+              <div class="ql-page">${renderCareerAccordions(nvqCreativeData, "nc")}</div>
+            </section>
+          `;
+        }
+
+        else if (activeView === "login") {
+          screenHtml = `
+            <section id="login" class="flex items-center justify-center min-h-[calc(100vh-58px)] px-6 py-12 animate-up">
+              <div class="login-card shadow-lg">
+                <h2>Welcome back</h2>
+                <p class="sub">Sign in to track your career exploration</p>
+                <form onsubmit="submitLogin(event)" class="space-y-4">
+                  <div class="igrp">
+                    <label for="name-input">NAME</label>
+                    <input id="name-input" placeholder="Your name" autocomplete="name" required />
+                  </div>
+                  <div class="igrp">
+                    <label for="email-input">EMAIL</label>
+                    <input id="email-input" type="email" placeholder="you@example.com" autocomplete="email" required />
+                  </div>
+                  <button type="submit" class="login-btn">Continue →</button>
+                </form>
+              </div>
+            </section>
+          `;
+        }
+
+        app.innerHTML = `
+          <div class="relative min-h-screen pb-12">
+            ${navHtml}
+            ${screenHtml}
+          </div>
+        `;
+
+        // Automatically substitute data-lucide icons correctly
+        if (window.lucide) {
+          lucide.createIcons();
+        }
+      }
+
+      // Parallax mouse movements inside home view
+      document.addEventListener('mousemove', (e) => {
+        const nx = (e.clientX / window.innerWidth) * 2 - 1;
+        const ny = (e.clientY / window.innerHeight) * 2 - 1;
+        
+        const wl1 = document.getElementById('waveLayer1');
+        const wl2 = document.getElementById('waveLayer2');
+        const wl3 = document.getElementById('waveLayer3');
+        const wl4 = document.getElementById('waveLayer4');
+        const orb1 = document.getElementById('orb1');
+        const orb2 = document.getElementById('orb2');
+
+        if (wl1) wl1.style.transform = `translate3d(${nx * -16}px, ${ny * -12}px, 0) scale(1.05)`;
+        if (wl2) wl2.style.transform = `translate3d(${nx * 24}px, ${ny * -20}px, 0) scale(1.08)`;
+        if (wl3) wl3.style.transform = `translate3d(${nx * -32}px, ${ny * 18}px, 0) scale(1.10)`;
+        if (wl4) wl4.style.transform = `translate3d(${nx * 12}px, ${ny * 28}px, 0) scale(1.05)`;
+        if (orb1) orb1.style.transform = `translate3d(${nx * -20}px, ${ny * -15}px, 0)`;
+        if (orb2) orb2.style.transform = `translate3d(${nx * 30}px, ${ny * -25}px, 0)`;
+      });
+
+      // Initial boot up
+      window.addEventListener("DOMContentLoaded", () => {
+        render();
+        runTypewriter();
+      });
+    </script>
+  </body>
+</html>
